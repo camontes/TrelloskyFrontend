@@ -1,11 +1,15 @@
 import { useState } from "react";
 import Button from "./Button";
+import Modal from "./Modal";
+import CreateUser from "./CreateUser";
+import { LuX } from "react-icons/lu";
 
 function Login() {
 
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
-    const[errorField, setErrorField] = useState<null | true>(null)
+    const[errorField, setErrorField] = useState<null | boolean>(null)
+    const[showModal, setShowModal] = useState(false);
 
     const handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) =>{
         e.preventDefault();
@@ -28,6 +32,23 @@ function Login() {
             setErrorField(false);
         }
     }
+
+    const handleShowModal = () =>{
+        setShowModal(!showModal);
+    }
+
+    const handleClose = () => {
+        setShowModal(false);
+    }
+
+    const actiosnBar = (
+        <div className="flex justify-end gap-2">
+            <LuX className="cursor-pointer" onClick={handleClose}/>
+        </div>
+    );
+    const modal = <Modal onClose={handleClose} actionBar={actiosnBar}>
+         <CreateUser />
+        </Modal>;
 
     return (
     <div className="min-h-[calc(100vh-80px)] flex items-center justify-center">
@@ -55,8 +76,12 @@ function Login() {
                             Login
                         </Button>
                     </div>
+                    <div className="flex justify-center mt-5">
+                        <h1 className="text-blue-600 cursor-pointer" onClick={handleShowModal}>Create Account</h1>
+                    </div>
             </form>
         </div>
+        {showModal && modal}
     </div>
     );
 };
