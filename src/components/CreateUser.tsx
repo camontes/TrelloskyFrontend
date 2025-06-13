@@ -12,7 +12,7 @@ function CreateUser(){
     });
 
     const validateEmail = (value: string) => {
-        // Expresión regular básica para email
+        // regular expression to validate email
         const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return regex.test(value);
     };
