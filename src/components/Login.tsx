@@ -5,8 +5,14 @@ import CreateUser from "./CreateUser";
 import {Uri} from "../utils/constants"
 import { LuX } from "react-icons/lu";
 import axios from "axios";
+import { loginUser } from "../store";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
@@ -47,6 +53,8 @@ function Login() {
                 status: "ok",
                 message: response.data.message,
             });
+
+            return response.data;
         }
         catch(error){
             console.log(error);
@@ -78,7 +86,21 @@ function Login() {
         }
         else{
             setErrorField(false);
-            await login();
+            const response = await login();
+
+            dispatch(loginUser(response));
+
+            setErrorLogin({
+                ...errorLogin,
+                status: "",
+                message: "",
+            });
+
+            setPassword("");
+            setEmail("");
+
+            navigate("/home");
+
         }
     }
 
