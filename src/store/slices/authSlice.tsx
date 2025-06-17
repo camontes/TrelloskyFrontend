@@ -8,7 +8,7 @@ interface User {
   // agrega más campos si necesitas
 }
 
-interface AuthState {
+export interface AuthState {
   user: User | null;
   token: string | null;
 }
