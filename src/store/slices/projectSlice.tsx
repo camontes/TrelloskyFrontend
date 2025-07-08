@@ -18,7 +18,7 @@ const projectSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchProjects.fulfilled, (state, action) =>{
-        state.data.push(action.payload.data);
+        state.data = action.payload.data;
     })
   },
 });

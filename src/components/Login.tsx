@@ -73,6 +73,8 @@ function Login() {
                 status: "error",
                 message: msg,
             });
+
+            return null;
         }
         finally{
             setLoadingLogin(false);
@@ -88,18 +90,20 @@ function Login() {
             setErrorField(false);
             const response = await login();
 
-            dispatch(loginUser(response));
+            if(response != null){
+                dispatch(loginUser(response));
 
-            setErrorLogin({
-                ...errorLogin,
-                status: "",
-                message: "",
-            });
+                setErrorLogin({
+                    ...errorLogin,
+                    status: "",
+                    message: "",
+                });
 
-            setPassword("");
-            setEmail("");
+                setPassword("");
+                setEmail("");
 
-            navigate("/home");
+                navigate("/home");
+            }
 
         }
     }
