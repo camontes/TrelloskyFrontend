@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import type  { RootState } from "../store";
 import { fetchProjects } from "../store";
@@ -8,6 +9,7 @@ import Loading from "./Loading";
 import ProjectItem from "./ProjectItem";
 
 function ProjectList(){
+const navigate = useNavigate();
 
 const user = useSelector((state: RootState) => state.auth);
 const projects = useSelector((state: RootState) => state.projects).data;
@@ -15,8 +17,12 @@ const projects = useSelector((state: RootState) => state.projects).data;
 const [doFetchProjects, isLoadingProjects, loadingProjectsError] = useThunk(fetchProjects);
 
 useEffect(() => {
-doFetchProjects(user);
-}, [doFetchProjects]);
+  if (!user || !user.token) {
+    navigate("/");
+  } else {
+    doFetchProjects(user);
+  }
+}, [user, doFetchProjects, navigate]);
 
 let content;
 
@@ -34,9 +40,11 @@ else{
 
 return (
 
-    <>
-     {content}
-    </>
+    <div className="flex justify-center mt-10">
+       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full max-w-6xl px-4">
+        {content}
+      </div>
+    </div>
 )
 };
 
