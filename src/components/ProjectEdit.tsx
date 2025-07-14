@@ -31,6 +31,9 @@ function ProjectEdit({project, handleCancel}: ProjectEditProps){
         }
     }
 
+    if(error){
+        return <p>error updating project</p>
+    }
     return(
         <>
             <div className="text-center">
