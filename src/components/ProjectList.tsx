@@ -7,11 +7,12 @@ import { useThunk } from "../hooks/use-thunk";
 import type { Project } from "../utils/interfaces/project";
 import Loading from "./Loading";
 import ProjectItem from "./ProjectItem";
+import { useAuth } from "../hooks/useAuth";
 
 function ProjectList(){
 const navigate = useNavigate();
 
-const user = useSelector((state: RootState) => state.auth);
+const user = useAuth();
 const projects = useSelector((state: RootState) => state.projects).data;
 
 const [doFetchProjects, isLoadingProjects, loadingProjectsError] = useThunk(fetchProjects);
