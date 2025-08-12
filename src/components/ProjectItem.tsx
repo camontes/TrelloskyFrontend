@@ -2,6 +2,9 @@ import { useState } from "react";
 import type { Project } from "../utils/interfaces/project";
 import ProjectEdit from "./ProjectEdit";
 import Button from "./Button";
+import { removeProject } from "../store/thunks/removeProject";
+import { useThunk } from "../hooks/use-thunk";
+import { useAuth } from "../hooks/useAuth";
 
 interface ProjectItemProps {
   project: Project;
@@ -9,7 +12,9 @@ interface ProjectItemProps {
 
 function ProjectItem({ project }: ProjectItemProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const[doRemoveProject, isLoadingRemove, errorRemove] = useThunk(removeProject);
 
+  const user = useAuth();
 
   const handleCancel = () => {
     setIsEditing(false);
@@ -18,6 +23,14 @@ function ProjectItem({ project }: ProjectItemProps) {
   const switchIsEditing = (e: React.MouseEvent<HTMLButtonElement>) =>{
     e.stopPropagation();
     setIsEditing(true);
+  }
+
+  const handleRemove = async() => {
+    const obj = {
+      auth: user,
+      id: project.id
+    }
+    await doRemoveProject(obj);
   }
 
   return (
@@ -41,7 +54,7 @@ function ProjectItem({ project }: ProjectItemProps) {
           >
             Editar
           </Button>
-          <Button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 z-20">
+          <Button className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600 z-20" loading = {isLoadingRemove} onClick={handleRemove}>
             Eliminar
           </Button>
         </div>

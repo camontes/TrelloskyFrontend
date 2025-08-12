@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { Project } from "../../utils/interfaces/project";
 import { fetchProjects } from "../thunks/fetchProjects";
 import { updateProject } from "../thunks/updateProject";
+import { removeProject } from "../thunks/removeProject";
 
 
 interface ProjectsState {
@@ -27,7 +28,15 @@ const projectSlice = createSlice({
       if (index !== -1) {
         state.data[index] = updated.data;
       }
-    });
+    })
+    .addCase(removeProject.fulfilled,(state, action) =>{
+      state.data = state.data.filter((project) => {
+        return project.id !== action.payload.data;
+      });
+    }
+
+    )
+    ;
   },
 });
 
